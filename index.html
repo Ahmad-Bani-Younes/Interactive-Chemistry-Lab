@@ -352,6 +352,23 @@
         <div class="chemical" draggable="true" data-name="NaCl">ملح NaCl</div>
         <div class="chemical" draggable="true" data-name="Fe">حديد Fe</div>
         <div class="chemical" draggable="true" data-name="HCl">حمض HCl</div>
+        <div class="chemical" draggable="true" data-name="Mg">مغنيسيوم Mg</div>
+<div class="chemical" draggable="true" data-name="O2">أكسجين O₂</div>
+<div class="chemical" draggable="true" data-name="CaCO3">كربونات الكالسيوم CaCO₃</div>
+<div class="chemical" draggable="true" data-name="H2SO4">حمض الكبريتيك H₂SO₄</div>
+<div class="chemical" draggable="true" data-name="Zn">زنك Zn</div>
+<div class="chemical" draggable="true" data-name="CH4">ميثان CH₄</div>
+<div class="chemical" draggable="true" data-name="O2">أوكسجين O₂</div>
+<div class="chemical" draggable="true" data-name="H2O2">فوق أكسيد الهيدروجين H₂O₂</div>
+<div class="chemical" draggable="true" data-name="Na2SO4">كبريتات الصوديوم Na₂SO₄</div>
+<div class="chemical" draggable="true" data-name="KBr">بروميد البوتاسيوم KBr</div>
+<div class="chemical" draggable="true" data-name="CO2">ثاني أكسيد الكربون CO₂</div>
+<div class="chemical" draggable="true" data-name="KSCN">ثيوسيانات البوتاسيوم KSCN</div>
+<div class="chemical" draggable="true" data-name="FeCl3">كلوريد الحديد FeCl₃</div>
+<div class="chemical" draggable="true" data-name="Fe2O3">أكسيد الحديد Fe₂O₃</div>
+<div class="chemical" draggable="true" data-name="Al">ألمنيوم Al</div>
+
+
       </div>
 
       <h3 class="section-title">اسحب المواد إلى أنبوب الاختبار</h3>
@@ -366,6 +383,12 @@
       </div>
 
       <div id="reaction-result"></div>
+      <div id="quiz-section" class="hidden" style="margin-top: 1.5rem;">
+  <h3 style="color: var(--primary-color);">🧠 سؤال سريع بعد التجربة</h3>
+  <p id="quiz-question" style="font-weight: 600;"></p>
+  <div id="quiz-options" style="margin-top: 1rem;"></div>
+</div>
+
       <div id="score">نقاطك: 0</div>
     </section>
 
@@ -373,14 +396,18 @@
       <h2 class="section-title">سجل التجارب</h2>
       <ul id="history-list"></ul>
     </section>
+  
+
   </main>
 
-  <audio id="reaction-sound" src="https://www.soundjay.com/button/sounds/button-16.mp3" preload="auto"></audio>
+<audio id="reaction-sound" src="https://www.dropbox.com/scl/fi/xz6xap9tsf45ivx0xrc8r/bubbling.mp3?rlkey=w8mvpu88dtf3v0xfqe84kv2q3&raw=1" preload="auto"></audio>
 
   <script>
     let selectedChemicals = [];
     let score = +localStorage.getItem("score") || 0;
     let history = JSON.parse(localStorage.getItem("history") || "[]");
+    
+
 
     const scoreDisplay = document.getElementById('score');
     const resultDisplay = document.getElementById('reaction-result');
@@ -427,9 +454,117 @@
     title: '🔥 بخار أبيض',
     equation: 'NH₃ + HCl → NH₄Cl',
     description: 'ينتج بخار أبيض من كلوريد الأمونيوم عند التفاعل الغازي.'
+  },
+  'Mg+O2': {
+  title: '🔥 احتراق المعدن',
+  equation: '2Mg + O₂ → 2MgO',
+  description: 'ينتج ضوء وحرارة قوية عند احتراق المغنيسيوم في الأكسجين.'
+},
+'CaCO3+HCl': {
+  title: '⚗️ تفاعل حمض-كربونات',
+  equation: 'CaCO₃ + 2HCl → CaCl₂ + CO₂↑ + H₂O',
+  description: 'ينتج غاز ثاني أكسيد الكربون وفقاعات واضحة.'
+},
+'Zn+H2SO4': {
+  title: '💥 إحلال فلزي',
+  equation: 'Zn + H₂SO₄ → ZnSO₄ + H₂↑',
+  description: 'يتحرر غاز الهيدروجين وتصدر فقاعات.'
+},
+'NaOH+FeSO4': {
+  title: '🟢 ترسيب أخضر',
+  equation: '2NaOH + FeSO₄ → Fe(OH)₂↓ + Na₂SO₄',
+  description: 'يتكوّن راسب أخضر من هيدروكسيد الحديد الثنائي.'
+},
+'CH4+O2': {
+  title: '🔥 تفاعل احتراق',
+  equation: 'CH₄ + 2O₂ → CO₂ + 2H₂O',
+  description: 'احتراق الميثان في الأوكسجين ينتج طاقة وثاني أكسيد الكربون والماء.'
+},
+'H2O2': {
+  title: '🧪 تفاعل تفكك',
+  equation: '2H₂O₂ → 2H₂O + O₂',
+  description: 'يتفكك فوق أكسيد الهيدروجين إلى ماء وغاز الأوكسجين.'
+},
+'H2O': {
+  title: '⚡ التحليل الكهربائي للماء',
+  equation: '2H₂O → 2H₂ + O₂',
+  description: 'عند تمرير تيار كهربائي، يتحلل الماء إلى غاز الهيدروجين والأوكسجين.'
+},
+'BaCl2+Na2SO4': {
+  title: '⚗️ تفاعل ترسيب',
+  equation: 'BaCl₂ + Na₂SO₄ → BaSO₄↓ + 2NaCl',
+  description: 'ينتج راسب أبيض من كبريتات الباريوم.'
+},
+'AgNO3+KBr': {
+  title: '⚗️ ترسيب أصفر',
+  equation: 'AgNO₃ + KBr → AgBr↓ + KNO₃',
+  description: 'يتكوّن راسب أصفر من بروميد الفضة.'
+},
+'Zn+HCl': {
+  title: '💥 تفاعل فلز مع حمض',
+  equation: 'Zn + 2HCl → ZnCl₂ + H₂↑',
+  description: 'ينتج غاز الهيدروجين وفقاعات.'
+},
+'CO2+NaOH': {
+  title: '🎯 تفاعل قاعدة مع أكسيد حمضي',
+  equation: 'CO₂ + 2NaOH → Na₂CO₃ + H₂O',
+  description: 'ينتج كربونات الصوديوم والماء.'
+},
+'FeCl3+KSCN': {
+  title: '🩸 تفاعل اللون الدموي',
+  equation: 'FeCl₃ + 3KSCN → Fe(SCN)₃ + 3KCl',
+  description: 'يتكوّن محلول أحمر دموي من ثيوسيانات الحديد.'
+},
+'Al+Fe2O3': {
+  title: '🔥 تفاعل ثيرمايت',
+  equation: '2Al + Fe₂O₃ → 2Fe + Al₂O₃',
+  description: 'تفاعل حراري قوي ينتج الحديد المنصهر. (للعرض فقط)'
+},
+'HCl+NaOH': {
+  title: '✅ تفاعل تعادل',
+  equation: 'HCl + NaOH → NaCl + H₂O',
+  description: 'يتكوّن ماء وملح عند مزج حمض الهيدروكلوريك مع هيدروكسيد الصوديوم.',
+  analysis: {
+    type: 'تعادل',
+    energy: 'طارد للحرارة',
+    result: 'ماء وملح',
+    observations: 'لا ينتج غاز ولا راسب'
   }
+}
+
+
+
+
 };
 
+const quizMap = {
+  'HCl+NaOH': {
+    q: 'ما نوع التفاعل بين HCl و NaOH؟',
+    options: ['احتراق', 'تعادل', 'إحلال'],
+    answer: 'تعادل'
+  },
+  'Na+H2O': {
+    q: 'ما الغاز الناتج من تفاعل الصوديوم مع الماء؟',
+    options: ['أكسجين', 'هيدروجين', 'نيتروجين'],
+    answer: 'هيدروجين'
+  },
+  'AgNO3+NaCl': {
+    q: 'ما المادة التي تترسب عند خلط AgNO3 و NaCl؟',
+    options: ['AgCl', 'NaNO3', 'NaCl'],
+    answer: 'AgCl'
+  },
+  'CuSO4+Fe': {
+    q: 'ما نوع هذا التفاعل؟',
+    options: ['تعادل', 'إحلال', 'تحلل'],
+    answer: 'إحلال'
+  },
+  'Al+Fe2O3': {
+  q: 'ما المادة الناتجة الأساسية في تفاعل الثيرمايت؟',
+  options: ['Al₂O₃', 'Fe₂O₃', 'FeCl₃'],
+  answer: 'Fe'
+}
+
+};
 
     // تهيئة الصفحة
     document.addEventListener('DOMContentLoaded', () => {
@@ -464,6 +599,7 @@
       if (!selectedChemicals.includes(chemical)) {
         selectedChemicals.push(chemical);
         tubeContent.textContent = selectedChemicals.join(' + ');
+        // showQuiz(key1) || showQuiz(key2);  // إظهار الكويز إن وُجد
       }
     }
 
@@ -472,11 +608,54 @@
     resultDisplay.textContent = '⚠️ الرجاء إضافة مواد أولاً';
     return;
   }
+  function showQuiz(reactionKey) {
+  const quiz = quizMap[reactionKey];
+  if (!quiz) return false;
+
+  const section = document.getElementById('quiz-section');
+  const question = document.getElementById('quiz-question');
+  const optionsDiv = document.getElementById('quiz-options');
+
+  section.classList.remove('hidden');
+  question.textContent = quiz.q;
+  optionsDiv.innerHTML = '';
+
+  quiz.options.forEach(option => {
+    const btn = document.createElement('button');
+    btn.textContent = option;
+    btn.style.margin = '0.5rem';
+    btn.style.backgroundColor = '#fff';
+    btn.style.color = '#333';
+    btn.style.border = '2px solid var(--primary-color)';
+    btn.style.padding = '0.5rem 1rem';
+    btn.style.borderRadius = '8px';
+    btn.style.cursor = 'pointer';
+    btn.style.transition = 'var(--transition)';
+    
+    btn.onclick = () => {
+      if (option === quiz.answer) {
+showCustomAlert('✅ إجابة صحيحة! حصلت على +5 نقاط 🎖️', '#28a745');
+        score += 5;
+        localStorage.setItem("score", score);
+        scoreDisplay.textContent = `نقاطك: ${score}`;
+      } else {
+showCustomAlert('❌ إجابة خاطئة. حاول مرة أخرى في التجربة القادمة.', '#dc3545');
+      }
+      section.classList.add('hidden');
+    };
+
+    optionsDiv.appendChild(btn);
+  });
+
+  return true;
+}
+
 
   const sound = document.getElementById('reaction-sound');
   const key1 = selectedChemicals.join('+');
   const key2 = selectedChemicals.slice().reverse().join('+');
   const reaction = reactionMap[key1] || reactionMap[key2] || null;
+document.getElementById("reaction-sound").play();
 
   if (reaction) {
     resultDisplay.innerHTML = `
@@ -484,6 +663,8 @@
       ⚗️ <code>${reaction.equation}</code><br>
       <p>${reaction.description}</p>
     `;
+    showQuiz(key1) || showQuiz(key2);
+
 
     score += 10;
     scoreDisplay.textContent = `نقاطك: ${score}`;
@@ -506,10 +687,33 @@
     localStorage.setItem("history", JSON.stringify(history));
   } else {
     resultDisplay.textContent = '❌ لا يوجد تفاعل ملحوظ بين هذه المواد';
+    showQuiz(key1) || showQuiz(key2);
+
   }
 
   selectedChemicals = [];
   tubeContent.textContent = "لا يوجد مواد بعد";
+
+  if (reaction.analysis) {
+  const analysisBtn = document.createElement('button');
+  analysisBtn.textContent = '🔍 حلّل التفاعل';
+  analysisBtn.style.marginTop = '1rem';
+  analysisBtn.onclick = () => showAnalysis(reaction.analysis);
+  resultDisplay.appendChild(analysisBtn);
+}
+
+}
+
+
+function showAnalysis(data) {
+  const msg = `
+    <strong>🔬 تحليل التفاعل:</strong><br>
+    • نوع التفاعل: ${data.type}<br>
+    • الطاقة: ${data.energy}<br>
+    • النواتج: ${data.result}<br>
+    • الملاحظات: ${data.observations}
+  `;
+  showCustomAlert(msg);
 }
 
 
@@ -563,6 +767,162 @@
         setTimeout(() => msg.remove(), 3000);
       }
     }
+
+const stepLab = {
+  steps: [
+    {
+      instruction: "① أضف حمض الهيدروكلوريك HCl إلى أنبوب الاختبار.",
+      image: "https://i.imgur.com/xcsfMiB.png"
+    },
+    {
+      instruction: "② أضف فلز المغنيسيوم Mg وستلاحظ تصاعد الفقاعات.",
+      image: "https://i.imgur.com/tVjkiwP.png"
+    },
+    {
+      instruction: "③ يظهر غاز الهيدروجين ويتكون كلوريد المغنيسيوم.",
+      image: "https://i.imgur.com/R0RZ2mw.png"
+    }
+  ],
+  result: {
+    title: "💥 تفاعل إزاحة",
+    equation: "Mg + 2HCl → MgCl₂ + H₂↑",
+    description: "يتحرر غاز الهيدروجين وفقاعات واضحة عند تفاعل المغنيسيوم مع الحمض."
+  },
+  currentStep: 0
+};
+
+
+
+
+function showStepLab(which = 'default') {
+  document.getElementById('lab-section').classList.add('hidden');
+  document.getElementById('history-section').classList.add('hidden');
+  document.getElementById('step-lab-section').classList.remove('hidden');
+
+
+  if (which === 'mg') currentStepLab = stepLab_Mg_O2;
+  else if (which === 'caco3') currentStepLab = stepLab_CaCO3_HCl;
+  else currentStepLab = stepLab;
+
+  currentStepLab.currentStep = 0;
+  showCurrentStep();
+}
+
+
+
+function showCurrentStep() {
+  const s = currentStepLab.steps[currentStepLab.currentStep];
+  document.getElementById('step-instructions').textContent = s.instruction;
+  const img = document.getElementById('step-img');
+  img.src = s.image;
+  img.style.display = 'block';
+  document.getElementById('step-result').innerHTML = '';
+}
+
+function nextStep() {
+  currentStepLab.currentStep++;
+  if (currentStepLab.currentStep >= currentStepLab.steps.length) {
+    const r = currentStepLab.result;
+    document.getElementById('step-instructions').textContent = '✅ التفاعل مكتمل!';
+const img = document.getElementById('step-img');
+img.style.display = 'none';
+img.src = ''; // هذا السطر يمنع عرض صورة مكسورة
+    document.getElementById('step-result').innerHTML = `
+      <strong>${r.title}</strong><br>
+      ⚗️ <code>${r.equation}</code><br>
+      <p>${r.description}</p>
+    `;
+  } else {
+    showCurrentStep();
+  }
+}
+
+
+const stepLab_Mg_O2 = {
+  steps: [
+    {
+      instruction: "① جهّز شريطًا من معدن الماغنيسيوم Mg.",
+      image: "https://i.imgur.com/7BGa0ks.png"
+    },
+    {
+      instruction: "② قرّب له مصدر نار أو شرارة قوية.",
+      image: "https://i.imgur.com/tzGRmhk.png"
+    },
+    {
+      instruction: "③ يبدأ الشريط بالاحتراق بسرعة وينتج وميض قوي.",
+      image: "https://i.imgur.com/31y19CU.png"
+    }
+  ],
+  result: {
+    title: "🔥 تفاعل احتراق الماغنيسيوم",
+    equation: "2Mg + O₂ → 2MgO",
+    description: "ينتج أكسيد الماغنيسيوم على شكل مسحوق أبيض ويتحرر ضوء ساطع."
+  },
+  currentStep: 0
+};
+
+
+
+const stepLab_CaCO3_HCl = {
+  steps: [
+    {
+      instruction: "① ضع بعض كربونات الكالسيوم CaCO₃ في أنبوب الاختبار.",
+      image: "https://i.imgur.com/Jjk1ikY.png"
+    },
+    {
+      instruction: "② أضف حمض الهيدروكلوريك HCl ببطء.",
+      image: "https://i.imgur.com/k4oZoP4.png"
+    },
+    {
+      instruction: "③ تظهر فقاعات غازية نتيجة التفاعل.",
+      image: "https://i.imgur.com/USbJSW9.png"
+    }
+  ],
+  result: {
+    title: "💨 إنتاج غاز ثاني أكسيد الكربون",
+    equation: "CaCO₃ + 2HCl → CaCl₂ + CO₂↑ + H₂O",
+    description: "ينتج غاز CO₂ وفقاعات واضحة تدل على التفاعل."
+  },
+  currentStep: 0
+};
+
+    let currentStepLab = stepLab;
+
+
+
+    function showCustomAlert(message, color = '#2c5e1a') {
+  const alertBox = document.getElementById('custom-alert');
+  alertBox.style.borderColor = color;
+  alertBox.style.display = 'block';
+  alertBox.innerHTML = message;
+
+  setTimeout(() => {
+    alertBox.style.display = 'none';
+  }, 3000);
+}
+
   </script>
+
+
+<div id="custom-alert" style="
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  color: #333;
+  border: 3px solid var(--primary-color);
+  padding: 1.5rem 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  font-size: 1.1rem;
+  z-index: 9999;
+  text-align: center;
+  transition: all 0.4s ease;
+  min-width: 250px;
+  max-width: 80%;
+"></div>
+
 </body>
 </html>
