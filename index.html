@@ -388,15 +388,48 @@
     const tube = document.getElementById('test-tube');
 
     const reactionMap = {
-      'HCl+NaOH': '✅ تفاعل تعادل: ماء وملح (NaCl + H₂O)',
-      'Na+H2O': '⚠️ تفاعل عنيف! 2Na + 2H₂O → 2NaOH + H₂↑',
-      'HCl+Na': '💥 انفجار بسيط! 2HCl + 2Na → 2NaCl + H₂↑',
-      'H2SO4+NaOH': '✅ تفاعل تعادل: H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O',
-      'AgNO3+NaCl': '⚗️ ترسيب أبيض: AgNO₃ + NaCl → AgCl↓ + NaNO₃',
-      'CuSO4+Fe': '🔁 إحلال فلزي: CuSO₄ + Fe → FeSO₄ + Cu↓',
-      'BaCl2+H2SO4': '⚠️ ترسيب أبيض: BaCl₂ + H₂SO₄ → BaSO₄↓ + 2HCl',
-      'NH3+HCl': '🔥 بخار أبيض: NH₃ + HCl → NH₄Cl'
-    };
+  'HCl+NaOH': {
+    title: '✅ تفاعل تعادل',
+    equation: 'HCl + NaOH → NaCl + H₂O',
+    description: 'يتكوّن ماء وملح عند مزج حمض الهيدروكلوريك مع هيدروكسيد الصوديوم.'
+  },
+  'Na+H2O': {
+    title: '⚠️ تفاعل عنيف',
+    equation: '2Na + 2H₂O → 2NaOH + H₂↑',
+    description: 'ينتج غاز الهيدروجين وتفاعل قوي قد يؤدي لانفجار بسيط.'
+  },
+  'HCl+Na': {
+    title: '💥 تفاعل إزاحة',
+    equation: '2Na + 2HCl → 2NaCl + H₂↑',
+    description: 'الصوديوم يزيح الهيدروجين من الحمض ويتكوّن ملح وهيدروجين.'
+  },
+  'H2SO4+NaOH': {
+    title: '✅ تعادل قوي',
+    equation: 'H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O',
+    description: 'حمض الكبريتيك يكوّن كبريتات الصوديوم والماء.'
+  },
+  'AgNO3+NaCl': {
+    title: '⚗️ ترسيب أبيض',
+    equation: 'AgNO₃ + NaCl → AgCl↓ + NaNO₃',
+    description: 'يتكوّن راسب أبيض من كلوريد الفضة غير الذائب.'
+  },
+  'CuSO4+Fe': {
+    title: '🔁 إحلال فلزي',
+    equation: 'CuSO₄ + Fe → FeSO₄ + Cu↓',
+    description: 'الحديد يزيح النحاس ويتكوّن كبريتات الحديد.'
+  },
+  'BaCl2+H2SO4': {
+    title: '⚠️ ترسيب أبيض كثيف',
+    equation: 'BaCl₂ + H₂SO₄ → BaSO₄↓ + 2HCl',
+    description: 'تكوّن كبريتات الباريوم راسبًا أبيض كثيفًا غير ذائب.'
+  },
+  'NH3+HCl': {
+    title: '🔥 بخار أبيض',
+    equation: 'NH₃ + HCl → NH₄Cl',
+    description: 'ينتج بخار أبيض من كلوريد الأمونيوم عند التفاعل الغازي.'
+  }
+};
+
 
     // تهيئة الصفحة
     document.addEventListener('DOMContentLoaded', () => {
@@ -434,44 +467,51 @@
       }
     }
 
-    function runReaction() {
-      if (selectedChemicals.length === 0) {
-        resultDisplay.textContent = '⚠️ الرجاء إضافة مواد أولاً';
-        return;
-      }
+  function runReaction() {
+  if (selectedChemicals.length === 0) {
+    resultDisplay.textContent = '⚠️ الرجاء إضافة مواد أولاً';
+    return;
+  }
 
-      const sound = document.getElementById('reaction-sound');
-      const key1 = selectedChemicals.join('+');
-      const key2 = selectedChemicals.slice().reverse().join('+');
-      const result = reactionMap[key1] || reactionMap[key2] || '❌ لا يوجد تفاعل ملحوظ بين هذه المواد';
+  const sound = document.getElementById('reaction-sound');
+  const key1 = selectedChemicals.join('+');
+  const key2 = selectedChemicals.slice().reverse().join('+');
+  const reaction = reactionMap[key1] || reactionMap[key2] || null;
 
-      resultDisplay.textContent = result;
+  if (reaction) {
+    resultDisplay.innerHTML = `
+      <strong>${reaction.title}</strong><br>
+      ⚗️ <code>${reaction.equation}</code><br>
+      <p>${reaction.description}</p>
+    `;
 
-      if (reactionMap[key1] || reactionMap[key2]) {
-        score += 10;
-        scoreDisplay.textContent = `نقاطك: ${score}`;
-        localStorage.setItem("score", score);
+    score += 10;
+    scoreDisplay.textContent = `نقاطك: ${score}`;
+    localStorage.setItem("score", score);
 
-        // تأثير الدخان
-        const smoke = document.createElement('div');
-        smoke.className = 'smoke';
-        tube.appendChild(smoke);
-        setTimeout(() => smoke.remove(), 2000);
+    // تأثير الدخان
+    const smoke = document.createElement('div');
+    smoke.className = 'smoke';
+    tube.appendChild(smoke);
+    setTimeout(() => smoke.remove(), 2000);
 
-        // تشغيل الصوت
-        sound.currentTime = 0;
-        sound.play();
+    // تشغيل الصوت
+    sound.currentTime = 0;
+    sound.play();
 
-        // تسجيل في السجل
-        const entry = `${new Date().toLocaleString('ar-EG')} - ${selectedChemicals.join(" + ")} → ${result.split(' ')[0]}`;
-        history.unshift(entry); // إضافة في البداية
-        if (history.length > 20) history.pop(); // تحديد السجل بـ 20 مدخلة كحد أقصى
-        localStorage.setItem("history", JSON.stringify(history));
-      }
+    // تسجيل في السجل
+    const entry = `${new Date().toLocaleString('ar-EG')} - ${selectedChemicals.join(" + ")} → ${reaction.title}`;
+    history.unshift(entry);
+    if (history.length > 20) history.pop();
+    localStorage.setItem("history", JSON.stringify(history));
+  } else {
+    resultDisplay.textContent = '❌ لا يوجد تفاعل ملحوظ بين هذه المواد';
+  }
 
-      selectedChemicals = [];
-      tubeContent.textContent = "لا يوجد مواد بعد";
-    }
+  selectedChemicals = [];
+  tubeContent.textContent = "لا يوجد مواد بعد";
+}
+
 
     function showHistory() {
       document.getElementById('lab-section').classList.add('hidden');
