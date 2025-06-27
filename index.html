@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>مختبر الكيمياء التفاعلي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #2c5e1a;
+      --secondary-color: #4a8c2a;
+      --accent-color: #ffd700;
+      --light-bg: #f8f9fa;
+      --white: #ffffff;
+      --dark-text: #333333;
+      --border-radius: 12px;
+      --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background-color: var(--light-bg);
+      padding: 0;
+      margin: 0;
+      color: var(--dark-text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: var(--white);
+      padding: 1rem;
+      text-align: center;
+      border-bottom: 4px solid var(--accent-color);
+      box-shadow: var(--box-shadow);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0.5rem 0;
+    }
+
+    .container {
+      width: 95%;
+      margin: 1rem auto;
+      padding: 0 0.5rem;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background-color: var(--primary-color);
+      color: var(--white);
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      white-space: nowrap;
+    }
+
+    button:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .chemicals-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      gap: 0.8rem;
+      margin: 1rem 0;
+    }
+
+    .chemical {
+      background-color: var(--white);
+      padding: 0.8rem 0.5rem;
+      border-radius: var(--border-radius);
+      cursor: grab;
+      font-weight: 700;
+      text-align: center;
+      transition: var(--transition);
+      box-shadow: var(--box-shadow);
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
+      font-size: 0.9rem;
+    }
+
+    .chemical:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-color: var(--accent-color);
+    }
+
+    .chemical::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: var(--accent-color);
+    }
+
+    .lab, .history {
+      background-color: var(--white);
+      padding: 1.2rem;
+      border-radius: var(--border-radius);
+      margin-top: 1rem;
+      box-shadow: var(--box-shadow);
+    }
+
+    .section-title {
+      color: var(--primary-color);
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 60px;
+      height: 2px;
+      background-color: var(--accent-color);
+    }
+
+    #test-tube {
+      margin: 1.5rem auto;
+      padding: 1.5rem;
+      border: 2px dashed var(--primary-color);
+      width: 90%;
+      max-width: 350px;
+      min-height: 100px;
+      background-color: rgba(234, 250, 241, 0.5);
+      border-radius: var(--border-radius);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    #test-tube:hover {
+      background-color: rgba(234, 250, 241, 0.8);
+    }
+
+    #test-tube::before {
+      content: '🧪';
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    #tube-content {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--dark-text);
+    }
+
+    #reaction-result {
+      margin: 1.5rem auto;
+      padding: 1rem;
+      background-color: var(--light-bg);
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      font-weight: 500;
+      max-width: 90%;
+      border-right: 3px solid var(--accent-color);
+    }
+
+    #score {
+      font-size: 1.1rem;
+      margin: 1rem 0;
+      color: var(--primary-color);
+      font-weight: 700;
+      background-color: rgba(255, 215, 0, 0.2);
+      padding: 0.8rem;
+      border-radius: var(--border-radius);
+      display: inline-block;
+    }
+
+    .hidden { 
+      display: none; 
+    }
+
+    /* تأثيرات التفاعل */
+    .smoke {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(closest-side, rgba(255,255,255,0.8), transparent);
+      border-radius: 50%;
+      animation: smokeRise 2s ease-out forwards;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    @keyframes smokeRise {
+      0% { transform: translateX(-50%) translateY(0) scale(0.8); opacity: 0.8; }
+      100% { transform: translateX(-50%) translateY(-150px) scale(1.3); opacity: 0; }
+    }
+
+    /* قائمة التاريخ */
+    #history-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    #history-list li {
+      padding: 0.8rem;
+      margin-bottom: 0.5rem;
+      background-color: var(--light-bg);
+      border-radius: var(--border-radius);
+      border-right: 3px solid var(--accent-color);
+      transition: var(--transition);
+      font-size: 0.9rem;
+    }
+
+    #history-list li:hover {
+      transform: translateX(-3px);
+      background-color: rgba(74, 140, 42, 0.1);
+    }
+
+    /* تأثيرات السحب والإفلات */
+    .drag-over {
+      background-color: rgba(74, 140, 42, 0.2) !important;
+      border-color: var(--secondary-color) !important;
+    }
+
+    /* تصميم متجاوب للشاشات الصغيرة جدًا */
+    @media (max-width: 480px) {
+      .chemicals-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 0.5rem;
+      }
+      
+      h1 {
+        font-size: 1.3rem;
+      }
+      
+      .section-title {
+        font-size: 1.1rem;
+      }
+      
+      button {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+      }
+      
+      #test-tube {
+        padding: 1rem;
+        min-height: 80px;
+      }
+      
+      #reaction-result {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* تعديلات للوضع الأفقي على الهواتف */
+    @media (max-height: 500px) and (orientation: landscape) {
+      header {
+        padding: 0.5rem;
+      }
+      
+      h1 {
+        font-size: 1.2rem;
+      }
+      
+      .container {
+        margin: 0.5rem auto;
+      }
+      
+      .chemicals-grid {
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 0.5rem;
+        margin: 0.5rem 0;
+      }
+      
+      .chemical {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+      }
+      
+      #test-tube {
+        margin: 0.8rem auto;
+        padding: 0.8rem;
+        min-height: 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <h1><span>🔬</span> مختبر الكيمياء التفاعلي</h1>
+      <div class="button-group">
+        <button onclick="showLab()"><span>🏠</span> التجارب</button>
+        <button onclick="showHistory()"><span>📜</span> سجل التجارب</button>
+        <button onclick="resetData()"><span>♻️</span> إعادة ضبط</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="lab" id="lab-section">
+      <h2 class="section-title">اختر المواد الكيميائية</h2>
+      
+      <div class="chemicals-grid">
+        <!-- المواد الأصلية -->
+        <div class="chemical" draggable="true" data-name="HCl">حمض HCl</div>
+        <div class="chemical" draggable="true" data-name="NaOH">قاعدة NaOH</div>
+        <div class="chemical" draggable="true" data-name="Na">صوديوم</div>
+        <div class="chemical" draggable="true" data-name="H2O">ماء</div>
+        <!-- مواد جديدة -->
+        <div class="chemical" draggable="true" data-name="H2SO4">حمض H₂SO₄</div>
+        <div class="chemical" draggable="true" data-name="CuSO4">كبريتات CuSO₄</div>
+        <div class="chemical" draggable="true" data-name="AgNO3">نترات AgNO₃</div>
+        <div class="chemical" draggable="true" data-name="NH3">الأمونيا NH₃</div>
+        <div class="chemical" draggable="true" data-name="BaCl2">كلوريد BaCl₂</div>
+        <div class="chemical" draggable="true" data-name="NaCl">ملح NaCl</div>
+        <div class="chemical" draggable="true" data-name="Fe">حديد Fe</div>
+        <div class="chemical" draggable="true" data-name="HCl">حمض HCl</div>
+      </div>
+
+      <h3 class="section-title">اسحب المواد إلى أنبوب الاختبار</h3>
+      <div id="test-tube" ondragover="dragOverHandler(event)" ondragleave="dragLeaveHandler(event)" ondrop="dropHandler(event)">
+        <p id="tube-content">لا يوجد مواد بعد</p>
+      </div>
+
+      <div style="text-align: center;">
+        <button onclick="runReaction()" style="padding: 0.8rem 1.5rem; font-size: 1rem;">
+          <span>⚗️</span> تنفيذ التفاعل
+        </button>
+      </div>
+
+      <div id="reaction-result"></div>
+      <div id="score">نقاطك: 0</div>
+    </section>
+
+    <section class="history hidden" id="history-section">
+      <h2 class="section-title">سجل التجارب</h2>
+      <ul id="history-list"></ul>
+    </section>
+  </main>
+
+  <audio id="reaction-sound" src="https://www.soundjay.com/button/sounds/button-16.mp3" preload="auto"></audio>
+
+  <script>
+    let selectedChemicals = [];
+    let score = +localStorage.getItem("score") || 0;
+    let history = JSON.parse(localStorage.getItem("history") || "[]");
+
+    const scoreDisplay = document.getElementById('score');
+    const resultDisplay = document.getElementById('reaction-result');
+    const tubeContent = document.getElementById('tube-content');
+    const tube = document.getElementById('test-tube');
+
+    const reactionMap = {
+      'HCl+NaOH': '✅ تفاعل تعادل: ماء وملح (NaCl + H₂O)',
+      'Na+H2O': '⚠️ تفاعل عنيف! 2Na + 2H₂O → 2NaOH + H₂↑',
+      'HCl+Na': '💥 انفجار بسيط! 2HCl + 2Na → 2NaCl + H₂↑',
+      'H2SO4+NaOH': '✅ تفاعل تعادل: H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O',
+      'AgNO3+NaCl': '⚗️ ترسيب أبيض: AgNO₃ + NaCl → AgCl↓ + NaNO₃',
+      'CuSO4+Fe': '🔁 إحلال فلزي: CuSO₄ + Fe → FeSO₄ + Cu↓',
+      'BaCl2+H2SO4': '⚠️ ترسيب أبيض: BaCl₂ + H₂SO₄ → BaSO₄↓ + 2HCl',
+      'NH3+HCl': '🔥 بخار أبيض: NH₃ + HCl → NH₄Cl'
+    };
+
+    // تهيئة الصفحة
+    document.addEventListener('DOMContentLoaded', () => {
+      scoreDisplay.textContent = `نقاطك: ${score}`;
+      
+      document.querySelectorAll('.chemical').forEach(item => {
+        item.addEventListener('dragstart', (e) => {
+          e.dataTransfer.setData('text', item.dataset.name);
+          item.style.opacity = '0.5';
+        });
+        
+        item.addEventListener('dragend', (e) => {
+          item.style.opacity = '1';
+        });
+      });
+    });
+
+    function dragOverHandler(e) {
+      e.preventDefault();
+      tube.classList.add('drag-over');
+    }
+
+    function dragLeaveHandler() {
+      tube.classList.remove('drag-over');
+    }
+
+    function dropHandler(e) {
+      e.preventDefault();
+      tube.classList.remove('drag-over');
+      
+      const chemical = e.dataTransfer.getData('text');
+      if (!selectedChemicals.includes(chemical)) {
+        selectedChemicals.push(chemical);
+        tubeContent.textContent = selectedChemicals.join(' + ');
+      }
+    }
+
+    function runReaction() {
+      if (selectedChemicals.length === 0) {
+        resultDisplay.textContent = '⚠️ الرجاء إضافة مواد أولاً';
+        return;
+      }
+
+      const sound = document.getElementById('reaction-sound');
+      const key1 = selectedChemicals.join('+');
+      const key2 = selectedChemicals.slice().reverse().join('+');
+      const result = reactionMap[key1] || reactionMap[key2] || '❌ لا يوجد تفاعل ملحوظ بين هذه المواد';
+
+      resultDisplay.textContent = result;
+
+      if (reactionMap[key1] || reactionMap[key2]) {
+        score += 10;
+        scoreDisplay.textContent = `نقاطك: ${score}`;
+        localStorage.setItem("score", score);
+
+        // تأثير الدخان
+        const smoke = document.createElement('div');
+        smoke.className = 'smoke';
+        tube.appendChild(smoke);
+        setTimeout(() => smoke.remove(), 2000);
+
+        // تشغيل الصوت
+        sound.currentTime = 0;
+        sound.play();
+
+        // تسجيل في السجل
+        const entry = `${new Date().toLocaleString('ar-EG')} - ${selectedChemicals.join(" + ")} → ${result.split(' ')[0]}`;
+        history.unshift(entry); // إضافة في البداية
+        if (history.length > 20) history.pop(); // تحديد السجل بـ 20 مدخلة كحد أقصى
+        localStorage.setItem("history", JSON.stringify(history));
+      }
+
+      selectedChemicals = [];
+      tubeContent.textContent = "لا يوجد مواد بعد";
+    }
+
+    function showHistory() {
+      document.getElementById('lab-section').classList.add('hidden');
+      document.getElementById('history-section').classList.remove('hidden');
+      const list = document.getElementById('history-list');
+      list.innerHTML = '';
+      
+      if (history.length === 0) {
+        list.innerHTML = '<li style="text-align: center;">لا يوجد تجارب مسجلة بعد.</li>';
+      } else {
+        history.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          list.appendChild(li);
+        });
+      }
+    }
+
+    function showLab() {
+      document.getElementById('lab-section').classList.remove('hidden');
+      document.getElementById('history-section').classList.add('hidden');
+    }
+
+    function resetData() {
+      if (confirm('هل أنت متأكد من إعادة ضبط النقاط وسجل التجارب؟ لن يمكنك استرجاع البيانات.')) {
+        localStorage.clear();
+        score = 0;
+        history = [];
+        scoreDisplay.textContent = 'نقاطك: 0';
+        resultDisplay.textContent = '';
+        showLab();
+        
+        // رسالة تأكيد
+        const msg = document.createElement('div');
+        msg.textContent = 'تمت إعادة الضبط بنجاح ✅';
+        msg.style.position = 'fixed';
+        msg.style.bottom = '20px';
+        msg.style.left = '50%';
+        msg.style.transform = 'translateX(-50%)';
+        msg.style.backgroundColor = 'var(--primary-color)';
+        msg.style.color = 'white';
+        msg.style.padding = '0.8rem 1.5rem';
+        msg.style.borderRadius = 'var(--border-radius)';
+        msg.style.zIndex = '1000';
+        msg.style.boxShadow = 'var(--box-shadow)';
+        msg.style.fontSize = '0.9rem';
+        document.body.appendChild(msg);
+        
+        setTimeout(() => msg.remove(), 3000);
+      }
+    }
+  </script>
+</body>
+</html>
